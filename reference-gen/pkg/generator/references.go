@@ -88,5 +88,13 @@ func findTypeReferences(allTypes map[string]*types.Type) map[*types.Type][]*type
 			m[t] = append(m[t], typ)
 		}
 	}
+
+	deduplicateReferences(m)
 	return m
+}
+
+func deduplicateReferences(allReferences map[*types.Type][]*types.Type) {
+	for typ, references := range allReferences {
+		allReferences[typ] = newTypeSetFromList(references).toList()
+	}
 }
